@@ -22,20 +22,25 @@ namespace products
     {
         List<producttpl> elements = new List<producttpl>();
         List<producttpl> displayed = new List<producttpl>();
+        List<producttpl> filtered = new List<producttpl>();
+        List<string> sellers = new List<string>();
         public MainWindow()
         {
             InitializeComponent();
 
-            
-            foreach(producttpl elem in stack.Items)
+            sellers.Add("All");
+            foreach (producttpl elem in stack.Items)
             {
                 elements.Add(elem);
+                sellers.Add(elem.Seller);
             }
-
+            
             displayed = elements;
+            filtered = elements;
             stack.Items.Clear();
             stack.ItemsSource = displayed;
-            cmb.ItemsSource = elements.Select(elem => elem.Seller);
+            cmb.ItemsSource = sellers;
+            
         }
 
         private void refreshdisp()
@@ -44,25 +49,59 @@ namespace products
             stack.ItemsSource = displayed;
         }
 
+        private void filtermanager()
+        {
+            filtered = elements;
+            cmbcheck();
+            qcheck();
+            pricecheck();
+            displayed = filtered;
+            refreshdisp();
+        }
+
+        private void cmbcheck()
+        {
+            if (cmb.SelectedItem != null)
+            {
+                if (cmb.SelectedItem.ToString() != "All")
+                {
+                    filtered = filtered.Where(n => n.Seller == cmb.SelectedItem as string).ToList();
+                }
+                else
+                {
+                    filtered = elements;
+                }
+            }
+        }
+        private void qcheck()
+        {
+            if (query.Text != null)
+            {
+                filtered = filtered.Where(n => (n.Productname.Contains(query.Text) || n.Description.Contains(query.Text))).ToList();
+            }
+        }
+
+        private void pricecheck()
+        {
+            if (int.TryParse(price.Text, out int p))
+            {
+                filtered = filtered.Where(n => n.Price <= p).ToList();
+            }
+        }
+
         private void cmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            displayed = elements.Where(n => n.Seller == e.AddedItems[0] as string).ToList();  
-            refreshdisp();
+            filtermanager();
         }
 
         private void query_TextChanged(object sender, TextChangedEventArgs e)
         {
-            displayed = elements.Where(n => (n.Productname.Contains((sender as TextBox).Text) || n.Description.Contains((sender as TextBox).Text))).ToList();
-            refreshdisp();
+            filtermanager();
         }
 
         private void price_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (int.TryParse((sender as TextBox).Text, out int p))
-            {
-                displayed = elements.Where(n => n.Price <= p).ToList();
-                refreshdisp();
-            }
+            filtermanager();
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
