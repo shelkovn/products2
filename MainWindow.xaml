@@ -1,0 +1,33 @@
+﻿<Window x:Class="products.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:products"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="650">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="405"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ItemsControl x:Name="stack"  Grid.Column="0">
+            <local:producttpl Imgsource="https://i.pinimg.com/736x/56/72/ca/5672ca5dea94afe05aac6595b12d5565.jpg" Productname="Armed Human" Description="OWWWW can and will shoot" Seller="yo ma" Price="1" Currency="tear" Instock="Billions"/>
+            <local:producttpl Imgsource="https://i.pinimg.com/236x/0f/34/50/0f345020fd30f06446f04ce4190dd5fd.jpg" Productname="Half-Devil" Description="Won't cry (probably)" Seller="Spardas Family" Price="1000" Currency="Red Orbs" Instock="I SHALL HUNT THEM DOWN THROUGH ETERNITY IF I MUST"/>
+            <local:producttpl Imgsource="https://static.wikia.nocookie.net/devilmaycry/images/4/44/DMC3_Red_Orb.png/revision/latest?cb=20190519021429" Productname="Red orb" Description="Totally not demon blood" Seller="Hell co." Price="-1000000" Currency="SLAY ALL" Instock=" lots"/>
+        </ItemsControl>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5">
+            <TextBlock Text="search name or desc:"/>
+            <TextBox x:Name="query" TextChanged="query_TextChanged"/>
+            <TextBlock Text="seller:" HorizontalAlignment="Right"/>
+            <ComboBox Grid.Column="1" x:Name="cmb" HorizontalAlignment="Right" SelectionChanged="cmb_SelectionChanged"/>
+            <TextBlock Text="maxprice" HorizontalAlignment="Right"/>
+            <TextBox x:Name="price" TextChanged="price_TextChanged" MinWidth="50" HorizontalAlignment="Right"/>
+            <TextBlock Text="Sort by price:"/>
+            <RadioButton GroupName="sorts" Content="v" Checked="RadioButton_Checked"/>
+            <RadioButton GroupName="sorts" Content="^" Checked="RadioButton_Checked_1"/>
+        </StackPanel>
+
+    </Grid>
+</Window>
